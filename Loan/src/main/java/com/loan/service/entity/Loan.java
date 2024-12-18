@@ -21,6 +21,26 @@ public class Loan {
     @Min(value = 1000, message = "VALUES MUST GREATER THAN 1000")
     private double amount;
 
+    private String isActive;
+
+    private String file;
+
+    public String getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(String isActive) {
+        this.isActive = isActive;
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
+    }
+
     public int getId() {
         return id;
     }

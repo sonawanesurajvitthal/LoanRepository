@@ -8,6 +8,9 @@ public class ApiConstants {
 
     // Other Constants
     public static final String DELETE_SUCCESSFULLY = "Delete Loan successfully against Id: ";
+    public static final String IS_ACTIVE = "ACTIVE";
+    public static final String DEACTIVATE = "DEACTIVATE";
+    public static final String NOT_ACTIVATE_LOAN = "Not Activate Loan ID: ";
 
     //Exception Constants
     public static final String LOAN_NOT_FOUND_ID = "LOAN NOT FOUND AGAINST LOAN ID: ";

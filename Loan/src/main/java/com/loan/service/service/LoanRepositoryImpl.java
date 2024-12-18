@@ -3,6 +3,7 @@ package com.loan.service.service;
 import com.loan.service.constants.ApiConstants;
 import com.loan.service.entity.Loan;
 import com.loan.service.exception.LoanNotFoundException;
+import com.loan.service.exception.LoanRequiredFields;
 import com.loan.service.repository.LoanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,18 +22,26 @@ public class LoanRepositoryImpl implements LoanService{
         if(loan.getName() == null){
             throw new LoanNotFoundException(ApiConstants.REQUIRED_FIELD);
         }
+
+        loan.setIsActive(ApiConstants.IS_ACTIVE);
         return loanRepository.save(loan);
     }
 
     @Override
     public Loan getLoan(int id) {
-        return loanRepository.findById(id)
+        Loan loan = loanRepository.findById(id)
                 .orElseThrow(() -> new LoanNotFoundException(ApiConstants.LOAN_NOT_FOUND_ID+id));
+        if(loan.getIsActive().equals(ApiConstants.DEACTIVATE)){
+            throw new LoanRequiredFields(ApiConstants.NOT_ACTIVATE_LOAN+id);
+        }
+
+        return loan;
     }
 
     @Override
     public List<Loan> listOfLoans() {
-        return loanRepository.findAll();
+        return loanRepository.findAll()
+                .stream().filter(loan -> loan.getIsActive().equals(ApiConstants.IS_ACTIVE)).toList();
     }
 
     @Override
@@ -53,9 +62,12 @@ public class LoanRepositoryImpl implements LoanService{
 
     @Override
     public void deleteLoanById(int id) {
-        loanRepository.findById(id)
+        Loan loan = loanRepository.findById(id)
                 .orElseThrow(() -> new LoanNotFoundException(ApiConstants.LOAN_NOT_FOUND_ID+id));
-        loanRepository.deleteById(id);
-
+        if(loan.getIsActive().equals(ApiConstants.DEACTIVATE)){
+            throw new LoanRequiredFields(ApiConstants.NOT_ACTIVATE_LOAN+id);
+        }
+        loan.setIsActive(ApiConstants.DEACTIVATE);
+        loanRepository.save(loan);
     }
 }
