@@ -15,4 +15,6 @@ public interface LoanService {
     public Loan updateLoan(Loan loan);
 
     public void deleteLoanById(int id);
+
+    public List<Loan> findByUserIdListOfLoans(int userId);
 }

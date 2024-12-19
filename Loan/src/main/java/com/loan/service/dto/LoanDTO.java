@@ -10,6 +10,16 @@ public class LoanDTO {
 
     private double amount;
 
+    private int userId;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     public int getId() {
         return id;
     }
@@ -39,6 +49,7 @@ public class LoanDTO {
         loanDTO.setId(loan.getId());
         loanDTO.setName(loan.getName());
         loanDTO.setAmount(loan.getAmount());
+        loanDTO.setUserId(loan.getUserId());
         return loanDTO;
     }
 }

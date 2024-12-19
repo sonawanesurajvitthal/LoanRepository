@@ -68,14 +68,8 @@ public class LoanController {
             }
     )
     @PostMapping
-    public ResponseEntity<LoanDTO> saveLoan(@ModelAttribute Loan loan, @RequestParam("file") MultipartFile file) throws IOException {
-
-        String originalFilename = file.getOriginalFilename();
-        Path fileNameAndPath = Paths.get(uploadDirectory,originalFilename);
-        Files.write(fileNameAndPath, file.getBytes());
-        loan.setFile(originalFilename);
+    public ResponseEntity<LoanDTO> saveLoan(@RequestBody Loan loan) {
         LoanDTO loanDTO = new LoanDTO().convertLoanIntoDTO(loanService.createLoan(loan));
-
         return ResponseEntity.status(HttpStatus.CREATED).body(loanDTO);
     }
 
@@ -142,6 +136,11 @@ public class LoanController {
     public ResponseEntity<String> deleteLoan(@PathVariable int id){
         loanService.deleteLoanById(id);
         return ResponseEntity.status(HttpStatus.OK).body(ApiConstants.DELETE_SUCCESSFULLY+id);
+    }
+
+    @GetMapping("/userId/{id}")
+    public List<Loan> findLoanByUserId(@PathVariable int id){
+        return loanService.findByUserIdListOfLoans(id);
     }
 
 
